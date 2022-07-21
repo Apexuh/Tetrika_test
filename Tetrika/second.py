@@ -1,5 +1,4 @@
 '''Задача №2.
-
 В нашей школе мы не можем разглашать персональные данные пользователей,
 но чтобы преподаватель и ученик смогли объяснить нашей поддержке, кого они имеют в виду (у преподавателей, например,
 часто учится несколько Саш), мы генерируем пользователям уникальные и легко произносимые имена.
@@ -13,7 +12,7 @@
 
 import requests
 from bs4 import BeautifulSoup
-# from time import time
+# from time import time   #для вывода времени выполнения кода
 
 url = 'https://ru.wikipedia.org/w/index.php?title=Категория%3AЖивотные_по_алфавиту&from=А'
 first_page = requests.get(url).text
@@ -24,7 +23,8 @@ abc_eng = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 
 def lets_find(page):
-    # print('|', end='')
+    """Основная функция"""
+    # print('|', end='')    #Печать '|' перед обработкой каждой страницы
     soup = BeautifulSoup(page, 'lxml')
     names = soup.find('div', class_='mw-category mw-category-columns').find_all('a')
     for name in names:
@@ -38,6 +38,7 @@ def lets_find(page):
 
 
 def list_to_dict():
+    """Конвертация полученного списка в словарь"""
     for animal in list_animals:
         first_letter = animal[0]
         if first_letter in dict_animals:
@@ -47,14 +48,18 @@ def list_to_dict():
 
 
 def print_items_value(dict_input, abc):
+    """Вывод пар ключ - значение словаря.
+        Если нет животных на какую-то букву, то будет '-' """
     for letter in abc:
         if letter in dict_input:
             print(f"{letter}: {dict_input[letter]}")
+        else:
+            print(f"{letter}: - ")
 
 
-# start_time = time()
+# start_time = time()   #стартовое время программы
 lets_find(first_page)
-# print()
+# print()   #перевод на новую строку, тк в функции печать с параметром  end=''
 list_to_dict()
 print_items_value(dict_animals, abc_cyr)
 print_items_value(dict_animals, abc_eng)
@@ -97,6 +102,8 @@ print_items_value(dict_animals, abc_eng)
 #     for letter in abc:
 #         if letter in dict_input:
 #             print(f"{letter}: {dict_input[letter]}")
+#         else:
+#         print(f"{letter}: - ")
 #
 #
 # start_time = time()
@@ -106,5 +113,4 @@ print_items_value(dict_animals, abc_eng)
 # print_items_value(dict_animals, abc_eng)
 # # print(f'Time for all operations: {time() - start_time}')    #Вывод затраченного времени.
 # # print(f'Amount of animals {sum(dict_animals.values())}')    #Для вывода общего количества животных.
-
 
